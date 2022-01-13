@@ -57,6 +57,31 @@ CREATE TEMPORARY TABLE moviesCopy SELECT * FROM movies;
 /*Elimine desta tabela temporária todos os filmes que ganharam menos de 5 prêmios.*/
 delete movies from movies where awards < 5;
 
+-- elimine desta tabela temporaria todos os filmes que ganharam menos de 5 premios
+delete from movies_temp where awards > 5;
+
+-- obter a lista de todos os generos que possuem pelo menos um filme
+select a.name, count(title) as total_filmes
+from genres a 
+left join movies b on b.genre_id = a.id
+group by 1
+having total_filmes > 0 ;
+
+-- obter lista de atores cujo filme favorito ganhou mais de 3 premios
+select a.first_name,b.awards
+from actors a 
+join movies b on b.id = a.id
+where awards > 3;
+
+-- use o plano de excecução para analisar as consultas ex6 e ex7 
+explain  select * from movies;
+
+-- criar indice na tabela filmes;
+alter table movies add index `title_index` (title);
+
+-- verificar se o indice foi criado
+show index from movies;
+
 
 
 select * from actors;
